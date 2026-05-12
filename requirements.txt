@@ -1,0 +1,123 @@
+# 🌫️ Smoke Density Estimation & Air Quality Monitoring
+### Image Processing & Computer Vision — Final Year Project
+
+A Flask web application that analyzes images for smoke/haze using:
+- **Laplacian Variance Clarity Metric** — measures image sharpness loss due to smoke
+- **Otsu Threshold Segmentation** — automatically separates smoke pixels from background
+- **AQI Estimation** — derives Air Quality Index from density and clarity metrics
+
+---
+
+## 📁 Project Structure
+
+```
+smoke_project/
+│
+├── app.py                  ← Flask backend + all image processing algorithms
+├── requirements.txt        ← Python dependencies
+├── README.md
+│
+├── templates/
+│   └── index.html          ← Main web page
+│
+└── static/
+    ├── css/
+    │   └── style.css       ← Styling
+    ├── js/
+    │   └── main.js         ← Frontend logic (upload, chart, results)
+    └── uploads/            ← Processed images saved here (auto-created)
+```
+
+---
+
+## 🚀 How to Run Locally
+
+### Step 1 — Make sure Python is installed
+```bash
+python --version   # should be 3.8 or above
+```
+
+### Step 2 — (Optional but recommended) Create a virtual environment
+```bash
+python -m venv venv
+
+# Activate it:
+# On Windows:
+venv\Scripts\activate
+
+# On Mac/Linux:
+source venv/bin/activate
+```
+
+### Step 3 — Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4 — Run the app
+```bash
+python app.py
+```
+
+### Step 5 — Open in browser
+```
+http://127.0.0.1:5000
+```
+
+---
+
+## 🧠 Algorithms Explained
+
+### Algorithm 1: Laplacian Variance Clarity Metric
+
+```
+Var(∇²I) = Σ(L(x,y) − μ)² / N
+```
+
+The Laplacian operator applies this kernel to the grayscale image:
+
+```
+[ 0  1  0 ]
+[ 1 -4  1 ]
+[ 0  1  0 ]
+```
+
+- **High variance** → sharp edges → clear image, low smoke
+- **Low variance** → blurry edges → haze/smoke present
+
+### Algorithm 2: Otsu Threshold Segmentation
+
+```
+T* = argmax [ω₀(t) · ω₁(t) · (μ₀(t) − μ₁(t))²]
+```
+
+Otsu's method finds the optimal threshold T* by maximising inter-class variance:
+- Pixels **above T*** → classified as smoke (bright, hazy)
+- Pixels **below T*** → classified as clear background
+
+Smoke density = fraction of pixels above threshold × 100%
+
+### AQI Estimation
+
+A heuristic model combining:
+- Smoke pixel density percentage
+- Clarity penalty from low Laplacian variance
+
+AQI ranges: Good (0-50) → Moderate (51-100) → Unhealthy (101-200) → Hazardous (301-500)
+
+---
+
+## 📦 Dependencies
+
+| Package       | Purpose                          |
+|---------------|----------------------------------|
+| Flask         | Web framework / routing          |
+| OpenCV        | Image processing (Laplacian, Otsu)|
+| NumPy         | Array operations                 |
+| Werkzeug      | File upload handling             |
+
+---
+
+## 👤 Author
+Final Year Student — B.E. / B.Tech (AI & DS / CS / ECE)
+Subject: Image Processing & Computer Vision
